@@ -17,39 +17,49 @@
             </SearchBar.Behaviors>
         </SearchBar>
 
-        <ListView 
-            ItemsSource="{Binding Cities}" 
-            SelectedItem="{Binding SelectedItem}"
-            HasUnevenRows="true"
-            CachingStrategy="RecycleElement"
-            SelectionMode="None">
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <ViewCell>
-                        <StackLayout 
+        <StackLayout
+            IsVisible="{Binding IsLoading}"
+            VerticalOptions="FillAndExpand">
+            <ActivityIndicator
+                VerticalOptions="CenterAndExpand"
+                IsRunning="{Binding IsLoading}"                
+                Color="LightBlue"/>
+            <Label
+                VerticalOptions="Start"
+                HorizontalOptions="CenterAndExpand"
+                Text="Aguarde, carregando cidades de todo o mundo..."
+                HorizontalTextAlignment="Center"
+                />
+        </StackLayout>
+
+        <StackLayout
+            VerticalOptions="FillAndExpand">
+            <ListView 
+                ItemsSource="{Binding Cities}" 
+                SelectedItem="{Binding SelectedItem}"
+                HasUnevenRows="true"
+                CachingStrategy="RecycleElement"
+                SelectionMode="None">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <StackLayout 
                             Orientation="Horizontal" 
                             HorizontalOptions="FillAndExpand" 
                             Margin="5"
                             Padding="5">
-                            <Label Text="{Binding Name}" FontSize="Medium" HorizontalOptions="FillAndExpand" LineBreakMode="TailTruncation" />
-                            <Label Text="{Binding Country}" FontSize="Medium" HorizontalOptions="End" />
-                        </StackLayout>
-                    </ViewCell>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-            <ListView.Behaviors>
-                <behaviors:EventToCommandBehavior Command="{Binding ItemSelectedCommand}"
+                                <Label Text="{Binding Name}" FontSize="Medium" HorizontalOptions="FillAndExpand" LineBreakMode="TailTruncation" />
+                                <Label Text="{Binding Country}" FontSize="Medium" HorizontalOptions="End" />
+                            </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+                <ListView.Behaviors>
+                    <behaviors:EventToCommandBehavior Command="{Binding ItemSelectedCommand}"
                                                   EventName="ItemTapped"
                                                   CommandParameter="{Binding .}"/>
-            </ListView.Behaviors>
-        </ListView>
-
-        <StackLayout
-            HorizontalOptions="FillAndExpand">
-            <Label 
-                Text="{Binding Pagination}"
-                HorizontalOptions="Center" />
+                </ListView.Behaviors>
+            </ListView>
         </StackLayout>
-
     </StackLayout>
 </ContentPage>

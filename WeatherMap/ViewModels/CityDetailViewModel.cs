@@ -74,9 +74,9 @@ namespace WeatherMap.ViewModels
             _weatherApiClient = weatherApiClient;
         }
 
-        public override async void OnNavigatingTo(INavigationParameters parameters)
+        public override async void OnNavigatedTo(INavigationParameters parameters)
         {
-            base.OnNavigatingTo(parameters);
+            base.OnNavigatedTo(parameters);
 
             _favourites = parameters["fav"] as ObservableCollection<WeatherResult>;
 

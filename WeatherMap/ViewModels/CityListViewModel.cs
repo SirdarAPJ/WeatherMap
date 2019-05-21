@@ -22,6 +22,7 @@ namespace WeatherMap.ViewModels
         private List<City> _allCities;
         private ICommand _searchCommand;
         private ICommand _itemSelectedCommand;
+        private bool _isLoading;
 
         public ObservableCollection<City> Cities
         {
@@ -29,26 +30,32 @@ namespace WeatherMap.ViewModels
             set { SetProperty(ref _cities, value); }
         }
 
+        public bool IsLoading
+            { get => _isLoading; set => SetProperty(ref _isLoading, value); }
+
         public CityListViewModel(INavigationService navigationService)
             : base(navigationService)
         {
             Title = "Selecione a Cidade";
         }
 
-        private void LoadListItems()
+        private async void LoadListItems()
         {
-
-            _allCities = Json.DeserializeResource<List<City>>("city.list.json");
+            _allCities = await Json.DeserializeResource<List<City>>("city.list.json");
             Cities = new ObservableCollection<City>(_allCities.ToList());
         }
 
-        public override void OnNavigatingTo(INavigationParameters parameters)
+        public override async void OnNavigatedTo(INavigationParameters parameters)
         {
-            LoadListItems();
+            base.OnNavigatedTo(parameters);
+
+            IsLoading = true;
+
+            await Task.Factory.StartNew(LoadListItems);
+
+            IsLoading = false;
 
             _favourites = parameters["fav"] as ObservableCollection<WeatherResult>;
-
-            base.OnNavigatingTo(parameters);
         }
 
         public ICommand SearchCommand => _searchCommand ?? (_searchCommand = new Command<string>((text) =>
@@ -74,6 +81,6 @@ namespace WeatherMap.ViewModels
 
         }));
 
-
+        
     }
 }
