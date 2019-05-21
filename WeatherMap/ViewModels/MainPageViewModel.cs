@@ -44,10 +44,12 @@ namespace WeatherMap.ViewModels
             if (fav == null || fav.Count == 0)
             {
                 Favourites = new ObservableCollection<WeatherResult>();
-                await _dialogService.DisplayAlertAsync(Title, "Lista de cidades favoritas vazia", "Ok");
+                await _dialogService.DisplayAlertAsync(Title, "Lista de cidades favoritas vazia!", "Ok");
             }
             else
+            {
                 Favourites = new ObservableCollection<WeatherResult>(fav);
+            }
         }
 
         public override void OnNavigatingTo(INavigationParameters parameters)
