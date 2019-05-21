@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:behaviors="clr-namespace:WeatherMap.Behaviors;assembly=WeatherMap"
+             x:Class="WeatherMap.Views.CityListPage"
+             Title="{Binding Title}">
+
+    <StackLayout Padding="5">
+
+        <SearchBar x:Name="SearchBar" 
+               Placeholder="Pesquisar" 
+               SearchCommand="{Binding SearchCommand}" 
+               SearchCommandParameter="{Binding Text, Source={x:Reference SearchBar}}"
+               Text="{Binding SearchText, Mode=TwoWay}">
+            <SearchBar.Behaviors>
+                <behaviors:TextChangedBehavior />
+            </SearchBar.Behaviors>
+        </SearchBar>
+
+        <ListView 
+            ItemsSource="{Binding Cities}" 
+            SelectedItem="{Binding SelectedItem}"
+            HasUnevenRows="true"
+            CachingStrategy="RecycleElement"
+            SelectionMode="None">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <StackLayout 
+                            Orientation="Horizontal" 
+                            HorizontalOptions="FillAndExpand" 
+                            Margin="5"
+                            Padding="5">
+                            <Label Text="{Binding Name}" FontSize="Medium" HorizontalOptions="FillAndExpand" LineBreakMode="TailTruncation" />
+                            <Label Text="{Binding Country}" FontSize="Medium" HorizontalOptions="End" />
+                        </StackLayout>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+            <ListView.Behaviors>
+                <behaviors:EventToCommandBehavior Command="{Binding ItemSelectedCommand}"
+                                                  EventName="ItemTapped"
+                                                  CommandParameter="{Binding .}"/>
+            </ListView.Behaviors>
+        </ListView>
+
+        <StackLayout
+            HorizontalOptions="FillAndExpand">
+            <Label 
+                Text="{Binding Pagination}"
+                HorizontalOptions="Center" />
+        </StackLayout>
+
+    </StackLayout>
+</ContentPage>

@@ -1,0 +1,85 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="WeatherMap.Views.CityDetailPage"             
+             xmlns:behaviors="clr-namespace:WeatherMap.Behaviors;assembly=WeatherMap"
+             xmlns:converter="clr-namespace:WeatherMap.Converters;assembly=WeatherMap"
+             Title="{Binding Title}">
+
+    <ContentPage.Resources>
+        <converter:TitleCaseValueConverter x:Key="TitleCaseValueConverter"/>
+        <converter:TemperatureValueConverter x:Key="TemperatureValueConverter"/>
+    </ContentPage.Resources>
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem 
+            Order="Primary"     
+            Text="Incluir"
+            Command="{Binding SaveCommand}"
+            Priority="0" />
+    </ContentPage.ToolbarItems>
+    
+    <ContentPage.Content>
+        <StackLayout
+            Padding="20, 20, 20, 20">
+            <Label
+                Text="{Binding CityName}"
+                VerticalOptions="Start"
+                HorizontalTextAlignment="Center"
+                Margin="0, 0, 0, 30"
+                FontSize="Large"
+                FontAttributes="Bold" />
+            <StackLayout
+                Orientation="Horizontal"
+                HorizontalOptions="CenterAndExpand">
+                <Label
+                    Text="{Binding Temperature, Converter={StaticResource TemperatureValueConverter}}"
+                    VerticalOptions="CenterAndExpand"
+                    HorizontalTextAlignment="Center"
+                    Margin="0, 0, 20, 0"
+                    FontSize="Large" 
+                    FontAttributes="Bold" />
+                <StackLayout
+                    HorizontalOptions="EndAndExpand">
+                    <Image 
+                        Source="{Binding Icon}"
+                        WidthRequest="80"
+                        HeightRequest="80"
+                        VerticalOptions="FillAndExpand"
+                        HorizontalOptions="FillAndExpand"/>
+                    <Label
+                        Text="{Binding Weather, Converter={StaticResource TitleCaseValueConverter}}"
+                        VerticalOptions="CenterAndExpand"
+                        HorizontalTextAlignment="Center"
+                        FontSize="Small" />
+                </StackLayout>
+            </StackLayout>
+            <StackLayout
+                Orientation="Horizontal"
+                HorizontalOptions="FillAndExpand">
+                <Label
+                    Text="Máxima: "
+                    VerticalOptions="StartAndExpand"
+                    FontSize="Medium"
+                    FontAttributes="Bold" />
+                <Label
+                    Text="{Binding Max, Converter={StaticResource TemperatureValueConverter}}"
+                    VerticalOptions="StartAndExpand"
+                    FontSize="Medium" />                
+            </StackLayout>
+            <StackLayout
+                Orientation="Horizontal"
+                HorizontalOptions="FillAndExpand">
+                <Label
+                    Text="Mínima: "
+                    VerticalOptions="StartAndExpand"
+                    FontSize="Medium"
+                    FontAttributes="Bold" />
+                <Label
+                    Text="{Binding Min, Converter={StaticResource TemperatureValueConverter}}"
+                    VerticalOptions="StartAndExpand"
+                    FontSize="Medium" />
+            </StackLayout>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
