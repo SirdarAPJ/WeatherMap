@@ -1,4 +1,5 @@
 ﻿using Prism.Navigation;
+using Prism.Services;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using WeatherMap.Helpers;
@@ -17,6 +18,7 @@ namespace WeatherMap.ViewModels
         private ICommand _itemSelectedCommand;
 
         private readonly IWeatherMapApiClient _weatherApiClient;
+        private readonly IPageDialogService _dialogService;
 
         public ObservableCollection<WeatherResult> Favourites
         {
@@ -25,20 +27,25 @@ namespace WeatherMap.ViewModels
         }
 
         public MainPageViewModel(INavigationService navigationService,
-                                 IWeatherMapApiClient weatherApiClient)
+                                 IWeatherMapApiClient weatherApiClient,
+                                 IPageDialogService dialogService)
             : base(navigationService)
         {
             Title = "Clima";
 
             _weatherApiClient = weatherApiClient;
+            _dialogService = dialogService;
         }
 
-        private void LoadListItems()
+        private async void LoadListItems()
         {
             var fav = Cache.Instance.Get<WeatherResult>("FAV");
 
-            if (fav == null)
+            if (fav == null || fav.Count == 0)
+            {
                 Favourites = new ObservableCollection<WeatherResult>();
+                await _dialogService.DisplayAlertAsync(Title, "Lista de cidades favoritas vazia", "Ok");
+            }
             else
                 Favourites = new ObservableCollection<WeatherResult>(fav);
         }

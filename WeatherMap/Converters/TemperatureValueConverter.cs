@@ -8,7 +8,7 @@ namespace WeatherMap.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return string.Format("{0:N0}° C", value);
+            return string.Format("{0:N0} °C", value);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
