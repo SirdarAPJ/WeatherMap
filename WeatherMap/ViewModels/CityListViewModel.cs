@@ -50,9 +50,7 @@ namespace WeatherMap.ViewModels
             base.OnNavigatedTo(parameters);
 
             IsLoading = true;
-
             await Task.Factory.StartNew(LoadListItems);
-
             IsLoading = false;
 
             _favourites = parameters["fav"] as ObservableCollection<WeatherResult>;
