@@ -37,14 +37,14 @@ namespace WeatherMap.ViewModels
             _dialogService = dialogService;
         }
 
-        private async void LoadListItems()
+        private void LoadListItems()
         {
             var fav = Cache.Instance.Get<WeatherResult>("FAV");
 
             if (fav == null || fav.Count == 0)
             {
                 Favourites = new ObservableCollection<WeatherResult>();
-                await _dialogService.DisplayAlertAsync(Title, "Lista de cidades favoritas vazia!", "Ok");
+                _dialogService.DisplayAlertAsync(Title, "Lista de cidades favoritas vazia!", "Ok");
             }
             else
             {

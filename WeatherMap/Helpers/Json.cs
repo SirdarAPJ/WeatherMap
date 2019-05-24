@@ -3,27 +3,19 @@ using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
 using System.IO;
 using System.Reflection;
+using System.Threading.Tasks;
 
 namespace WeatherMap.Helpers
 {
     public class Json
     {
-        public static T DeserializeFromFile<T>(string fileName)
-        {
-            using (StreamReader file = File.OpenText(fileName))
-            {
-                JsonSerializer serializer = new JsonSerializer();
-                return (T)serializer.Deserialize(file, typeof(T));
-            }
-        }
-
-        public static T DeserializeResource<T>(string fileName)
+        public static async Task<T> DeserializeResource<T>(string fileName)
         {
             var assembly = typeof(Json).GetTypeInfo().Assembly;
             Stream stream = assembly.GetManifestResourceStream($"{assembly.GetName().Name}.{fileName}");
             using (var reader = new StreamReader(stream))
             {
-                var jsonString = reader.ReadToEnd();
+                var jsonString = await reader.ReadToEndAsync();
 
                 return JsonConvert.DeserializeObject<T>(jsonString);
             }

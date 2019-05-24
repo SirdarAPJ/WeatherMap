@@ -41,17 +41,36 @@
                             HorizontalOptions="FillAndExpand" 
                             Margin="5"
                             Padding="5">
-                            <Label Text="{Binding Name}" FontSize="Medium" HorizontalOptions="FillAndExpand" />
-                            <Label Text="{Binding Weather[0].Description, 
-                                Converter={StaticResource TitleCaseValueConverter}}" 
-                                FontSize="Medium" 
-                                HorizontalOptions="EndAndExpand" />
-                            <Label Text="{Binding Main.Temp, 
-                                Converter={StaticResource TemperatureValueConverter}}" 
-                                FontSize="Medium" 
-                                HorizontalOptions="End" 
-                                WidthRequest="100" 
-                                HorizontalTextAlignment="End" />
+
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="30" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="300*"  />
+                                    <ColumnDefinition Width="200*" />
+                                    <ColumnDefinition Width="100*" />
+                                </Grid.ColumnDefinitions>
+                                <Label Text="{Binding Name}" 
+                                    FontSize="Medium" 
+                                    LineBreakMode="TailTruncation"
+                                    Grid.Row="0"
+                                    Grid.Column="0" />
+                                <Label Text="{Binding Weather[0].Description, 
+                                    Converter={StaticResource TitleCaseValueConverter}}" 
+                                    FontSize="Medium" 
+                                    LineBreakMode="TailTruncation"
+                                    Grid.Row="0"
+                                    Grid.Column="1" />
+                                <Label Text="{Binding Main.Temp, 
+                                    Converter={StaticResource TemperatureValueConverter}}" 
+                                    FontSize="Medium" 
+                                    HorizontalOptions="End" 
+                                    HorizontalTextAlignment="End"
+                                    Grid.Row="0"
+                                    Grid.Column="2" />
+                            </Grid>
+
                         </StackLayout>
                     </ViewCell>
                 </DataTemplate>

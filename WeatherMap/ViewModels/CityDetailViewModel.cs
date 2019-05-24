@@ -1,4 +1,5 @@
 ﻿using Prism.Navigation;
+using Prism.Services;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -21,6 +22,7 @@ namespace WeatherMap.ViewModels
         private WeatherResult _details;
 
         private readonly IWeatherMapApiClient _weatherApiClient;
+        private readonly IPageDialogService _dialogService;
 
         private ICommand _saveCommand;
 
@@ -67,16 +69,18 @@ namespace WeatherMap.ViewModels
         }
 
         public CityDetailViewModel(INavigationService navigationService,
-                                   IWeatherMapApiClient weatherApiClient)
+                                   IWeatherMapApiClient weatherApiClient,
+                                   IPageDialogService dialogService)
             : base(navigationService)
         {
             Title = "Detalhes";
             _weatherApiClient = weatherApiClient;
+            _dialogService = dialogService;
         }
 
-        public override async void OnNavigatingTo(INavigationParameters parameters)
+        public override async void OnNavigatedTo(INavigationParameters parameters)
         {
-            base.OnNavigatingTo(parameters);
+            base.OnNavigatedTo(parameters);
 
             _favourites = parameters["fav"] as ObservableCollection<WeatherResult>;
 
@@ -91,17 +95,25 @@ namespace WeatherMap.ViewModels
                 Min = _details.Main.Temp_min;
                 Weather = _details.Weather[0].Description;
             }
+            else
+            {
+                await _dialogService.DisplayAlertAsync(Title, "Não foi possível obter o clima da cidade!", "Ok");
+                await NavigationService.GoBackAsync();
+            }
 
         }
 
         public ICommand SaveCommand => _saveCommand ?? (_saveCommand = new Command<string>((text) =>
         {
-            if (!_favourites.Any(a => a.Id == _details.Id))
+            if (_details != null)
             {
-                _favourites.Add(_details);
-            }
+                if (!_favourites.Any(a => a.Id == _details.Id))
+                {
+                    _favourites.Add(_details);
+                }
 
-            SaveCache();
+                SaveCache();
+            }
 
         }));
 
